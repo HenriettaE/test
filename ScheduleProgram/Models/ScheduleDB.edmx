@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EmployeeScheduleModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="PersonalInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonellNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ScheduleCode" Type="int" />
+        </EntityType>
+        <EntityType Name="ScheduleTable">
+          <Key>
+            <PropertyRef Name="ScheduleCode" />
+          </Key>
+          <Property Name="ScheduleCode" Type="int" Nullable="false" />
+          <Property Name="ValidForm" Type="date" Nullable="false" />
+          <Property Name="ValidTo" Type="date" Nullable="false" />
+          <Property Name="Uploader" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_PersonalInfo_ScheduleTable">
+          <End Role="ScheduleTable" Type="Self.ScheduleTable" Multiplicity="0..1" />
+          <End Role="PersonalInfo" Type="Self.PersonalInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScheduleTable">
+              <PropertyRef Name="ScheduleCode" />
+            </Principal>
+            <Dependent Role="PersonalInfo">
+              <PropertyRef Name="ScheduleCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmployeeScheduleModelStoreContainer">
+          <EntitySet Name="PersonalInfo" EntityType="Self.PersonalInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScheduleTable" EntityType="Self.ScheduleTable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_PersonalInfo_ScheduleTable" Association="Self.FK_PersonalInfo_ScheduleTable">
+            <End Role="ScheduleTable" EntitySet="ScheduleTable" />
+            <End Role="PersonalInfo" EntitySet="PersonalInfo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EmployeeScheduleModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="PersonalInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonellNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ScheduleCode" Type="Int32" />
+          <NavigationProperty Name="ScheduleTable" Relationship="Self.FK_PersonalInfo_ScheduleTable" FromRole="PersonalInfo" ToRole="ScheduleTable" />
+        </EntityType>
+        <EntityType Name="ScheduleTable">
+          <Key>
+            <PropertyRef Name="ScheduleCode" />
+          </Key>
+          <Property Name="ScheduleCode" Type="Int32" Nullable="false" />
+          <Property Name="ValidForm" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ValidTo" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Uploader" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PersonalInfo" Relationship="Self.FK_PersonalInfo_ScheduleTable" FromRole="ScheduleTable" ToRole="PersonalInfo" />
+        </EntityType>
+        <Association Name="FK_PersonalInfo_ScheduleTable">
+          <End Role="ScheduleTable" Type="Self.ScheduleTable" Multiplicity="0..1" />
+          <End Role="PersonalInfo" Type="Self.PersonalInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScheduleTable">
+              <PropertyRef Name="ScheduleCode" />
+            </Principal>
+            <Dependent Role="PersonalInfo">
+              <PropertyRef Name="ScheduleCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmployeeScheduleEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="PersonalInfo" EntityType="Self.PersonalInfo" />
+          <EntitySet Name="ScheduleTable" EntityType="Self.ScheduleTable" />
+          <AssociationSet Name="FK_PersonalInfo_ScheduleTable" Association="Self.FK_PersonalInfo_ScheduleTable">
+            <End Role="ScheduleTable" EntitySet="ScheduleTable" />
+            <End Role="PersonalInfo" EntitySet="PersonalInfo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EmployeeScheduleModelStoreContainer" CdmEntityContainer="EmployeeScheduleEntities">
+          <EntitySetMapping Name="PersonalInfo">
+            <EntityTypeMapping TypeName="EmployeeScheduleModel.PersonalInfo">
+              <MappingFragment StoreEntitySet="PersonalInfo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PersonellNumber" ColumnName="PersonellNumber" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="ScheduleCode" ColumnName="ScheduleCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScheduleTable">
+            <EntityTypeMapping TypeName="EmployeeScheduleModel.ScheduleTable">
+              <MappingFragment StoreEntitySet="ScheduleTable">
+                <ScalarProperty Name="ScheduleCode" ColumnName="ScheduleCode" />
+                <ScalarProperty Name="ValidForm" ColumnName="ValidForm" />
+                <ScalarProperty Name="ValidTo" ColumnName="ValidTo" />
+                <ScalarProperty Name="Uploader" ColumnName="Uploader" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
